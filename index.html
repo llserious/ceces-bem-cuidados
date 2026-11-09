@@ -87,6 +87,11 @@ async function mapearObs(){const versao=++OBS.versaoMapa,mapa=await iniciarMapaO
 const detalharOriginalObs=detalharObs;
 detalharObs=function(id,rolar=true){detalharOriginalObs(id,false);const s=OBS.dados?.servicos.find(x=>x.id===id);if(!s)return;const painel=$('detalhe'),fatos=painel.querySelector('.facts'),area=elementoObs('div');const registros=[['O que foi solicitado',s.solicitado||s.descricao||'A descrição do problema ainda não está disponível na consulta pública.'],['Serviço previsto',s.previsto||'Não há descrição pública do serviço previsto.'],['O que foi realizado',s.realizado||(s.status==='concluido'?'O serviço consta como concluído, mas o reparo realizado não foi detalhado na base pública.':'Ainda não há descrição de execução concluída.')]];if(s.materialInformado)registros.push(['Material informado',s.materialInformado]);for(const [titulo,valor] of registros){const card=elementoObs('div',undefined,'melhoria-item');card.append(elementoObs('strong',titulo),elementoObs('p',valor));area.append(card)}painel.insertBefore(area,fatos||null);if(rolar)painel.scrollIntoView({behavior:'smooth',block:'nearest'})};
 estiloNovoObs();
+  
+const ajusteVisualCECE=document.createElement('style');
+ajusteVisualCECE.textContent='#mapa .leaflet-tile-pane{filter:brightness(.76) saturate(.75) contrast(1.08)!important}.balao-cece{width:65px!important;height:65px!important;box-sizing:border-box!important;overflow:hidden!important;padding:4px!important;gap:2px!important}.balao-cece strong{display:block!important;font-size:21px!important;line-height:1!important}.balao-cece small{display:block!important;font-size:6.5px!important;line-height:1.15!important;letter-spacing:0!important;white-space:nowrap!important;font-weight:600!important}';
+document.head.appendChild(ajusteVisualCECE);
+
 carregarObs();
 </script>
 </body>
