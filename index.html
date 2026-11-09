@@ -210,6 +210,11 @@ $('mais').onclick=()=>{OBS.limite+=30;renderObs()};
 $('enquadrar').onclick=()=>{$('cece').value='';$('regiao').value='';OBS.filtroMudou=true;renderObs()};
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)carregarObs()});
 setInterval(()=>{if(!document.hidden)carregarObs()},900000);
+  
+function ativarContornosFixosLEDObs(){if(!OBS.mapa||!OBS.contornos)return;const mapa=OBS.mapa;let pane=mapa.getPane('cece-led-forte');if(!pane){pane=mapa.createPane('cece-led-forte');pane.style.zIndex='590';pane.style.pointerEvents='none'}if(!OBS.camadaLEDforte)OBS.camadaLEDforte=L.layerGroup().addTo(mapa);OBS.camadaLEDforte.clearLayers();const terrenos=[...Object.entries(OBS_CONTORNOS).map(([nome,pol])=>({nome,pol})),...OBS_NOVOS_CONTORNOS.map(([padrao,pol])=>({nome:padrao.source.replace(/\\s\+|\.\*|\\/g,' ').trim(),pol}))];const renderer=L.svg({pane:'cece-led-forte',padding:0.5});terrenos.forEach(({pol})=>{if(!Array.isArray(pol)||pol.length<3)return;const op={pane:'cece-led-forte',renderer,interactive:false,fill:false,lineCap:'round',lineJoin:'round'};OBS.camadaLEDforte.addLayer(L.polygon(pol,{...op,color:'#007bff',weight:22,opacity:.24}));OBS.camadaLEDforte.addLayer(L.polygon(pol,{...op,color:'#00aeff',weight:13,opacity:.43}));OBS.camadaLEDforte.addLayer(L.polygon(pol,{...op,color:'#00eaff',weight:7,opacity:.88}));OBS.camadaLEDforte.addLayer(L.polygon(pol,{...op,color:'#edffff',weight:2.8,opacity:1}))});console.log('Contornos LED desenhados:',terrenos.length)}
+const mapearAnteriorLEDObs=mapearObs;
+mapearObs=async function(){await mapearAnteriorLEDObs();ativarContornosFixosLEDObs()};
+
 carregarObs();
 </script>
 </body>
