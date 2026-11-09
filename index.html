@@ -103,6 +103,9 @@ carregarObs=async function(){if(OBS.ocupado)return;const botao=$('atualizar');bo
 $('atualizar').onclick=()=>carregarObs();
 carregarObs();
 
+function corrigirTamanhoPaineisObs(){if(document.getElementById('ajuste-altura-ceces'))return;const css=document.createElement('style');css.id='ajuste-altura-ceces';css.textContent='@media(min-width:1101px){.layout{align-items:stretch!important}.layout>.panel{height:100%!important}.layout>.detail{min-height:0!important;max-height:none!important;height:100%!important;overflow-y:auto!important}.map{height:700px!important}}@media(max-width:1100px){.layout{grid-template-columns:1fr!important}.detail{height:auto!important;min-height:220px!important;max-height:none!important}.map{height:520px!important}}@media(max-width:600px){.map{height:420px!important}}';document.head.appendChild(css)}
+corrigirTamanhoPaineisObs();
+
 carregarObs();
 </script>
 </body>
