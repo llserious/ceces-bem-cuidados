@@ -118,6 +118,11 @@ carregarObs();
 function compactarDashboardObs(){if(document.getElementById('dash-compacto-v2'))return;const css=document.createElement('style');css.id='dash-compacto-v2';css.textContent='#dash-tipos-cece{padding:12px!important;margin-bottom:12px!important}#dash-tipos-cece .dash-cabecalho{margin-bottom:9px!important}#dash-tipos-cece h2{font-size:15px!important}#dash-tipos-cece .dash-subtitulo{font-size:10px!important}#dash-tipos-cece .dash-grade{gap:7px!important}#dash-tipos-cece .dash-tipo{padding:9px 11px!important;border-radius:7px!important}#dash-tipos-cece .dash-nome{font-size:10px!important;min-height:20px!important;gap:5px!important}#dash-tipos-cece .dash-icone{font-size:14px!important}#dash-tipos-cece .dash-quantidade{font-size:21px!important;margin:2px 0 5px!important;line-height:1.1!important}#dash-tipos-cece .dash-barra{height:3px!important}#dash-tipos-cece .dash-percentual{font-size:9px!important;margin-top:4px!important}@media(min-width:1101px){#dash-tipos-cece .dash-grade{grid-template-columns:repeat(5,minmax(0,1fr))!important}}@media(max-width:600px){#dash-tipos-cece .dash-grade{grid-template-columns:repeat(2,minmax(0,1fr))!important}}';document.head.append(css)}
 compactarDashboardObs();
 
+const SERVICOS_REALIZADOS_CECE={};
+function registrarExecucaoCECE(id,descricao){const codigo=String(id||'').replace(/^OS-LEG-/,'').toUpperCase(),texto=String(descricao||'').trim();if(!/^M\d{3,6}$/.test(codigo)||!texto)return;SERVICOS_REALIZADOS_CECE[codigo]=texto}
+const detalharAntesExecucaoCECE=detalharObs;
+detalharObs=function(id,rolar=true){detalharAntesExecucaoCECE(id,false);const s=OBS.dados?.servicos.find(x=>x.id===id);if(!s)return;const painel=$('detalhe'),codigo=String(s.id).replace(/^OS-LEG-/,'').toUpperCase(),descricao=SERVICOS_REALIZADOS_CECE[codigo];painel.querySelectorAll('.obs-resumo-direto,.melhoria-item,.obs-melhoria').forEach(x=>x.remove());if(descricao&&s.status==='concluido'){const bloco=elementoObs('div',undefined,'obs-resumo-direto');bloco.append(elementoObs('strong','Serviço realizado'),elementoObs('p',descricao));(painel.querySelector('h2')||painel.firstChild).after(bloco)}if(rolar)painel.scrollIntoView({behavior:'smooth',block:'nearest'})};
+
 carregarObs();
 </script>
 </body>
